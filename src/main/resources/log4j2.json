@@ -1,0 +1,66 @@
+{
+  "configuration": {
+    "name": "Default",
+    "appenders": {
+      "Console": {
+        "name": "Console-Appender",
+        "target": "SYSTEM_OUT",
+        "PatternLayout": {
+          "pattern": "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1}:%L  - %msg%n"
+        }
+      },
+      "RollingFile": {
+        "name": "File",
+        "fileName": "D:/aws_logs/aws.log",
+        "filePattern": "D:/aws_logs/aws.log-%i.log",
+        "PatternLayout": {
+          "pattern": "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1}:%L  - %msg%n"
+        },
+        "Policies": {
+          "SizeBasedTriggeringPolicy": {
+            "size": "5 MB"
+          }
+        },
+        "DefaultRolloverStrategy": {
+          "max": "200"
+        }
+      },
+      "CloudWatch": {
+        "name": "CloudWatch-Appender",
+        "type": "com.amazonaws.services.logs.logback.CloudWatchAppender",
+        "logGroupName": "sample-log-group",
+        "logStreamName": "sample-log-stream",
+        "layout": {
+          "PatternLayout": {
+            "pattern": "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1}:%L  - %msg%n"
+          }
+        }
+      }
+    },
+    "loggers": {
+      "root": {
+        "level": "debug",
+        "appender-ref": [
+          {
+            "ref": "File",
+            "level": "dubug"
+          },
+          {
+            "ref": "Console-Appender",
+            "level": "debug"
+          },
+          {
+            "ref": "CloudWatch",
+            "level": "debug"
+          }
+        ]
+      },
+      "logger": [
+        {
+          "name": "org.hibernate.engine.internal.StatisticalLoggingSessionEventListener",
+          "level": "fatal"
+        }
+      ]
+    }
+  }
+}
